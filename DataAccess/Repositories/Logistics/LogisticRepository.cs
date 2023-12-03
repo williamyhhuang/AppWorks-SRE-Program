@@ -19,7 +19,7 @@ public class LogisticRepository : ILogisticRepository
                      join recipient in this._posgresDbContext.Recipients
                      on logistic.recipient_id equals recipient.recipient_id
                      join location in this._posgresDbContext.Locations
-                     on tracking.location_Id equals location.location_id
+                     on tracking.location_id equals location.location_id
                      select new GetReturnModel
                      {
                          logistic_id = logistic.logistic_id,
@@ -27,7 +27,7 @@ public class LogisticRepository : ILogisticRepository
                          logistic_tracking_id = tracking.logistic_tracking_id,
                          arrive_date_time = tracking.arrive_datetime,
                          tracking_status = tracking.tracking_status,
-                         location_id = tracking.location_Id,
+                         location_id = tracking.location_id,
                          location_title = location.location_title,
                          recipient_id = logistic.recipient_id,
                          recipient_name = recipient.recipient_name,

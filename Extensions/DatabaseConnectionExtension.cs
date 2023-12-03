@@ -1,4 +1,5 @@
 ﻿using Npgsql;
+using Renci.SshNet;
 
 namespace SRE.Program.WebAPI.Extensions;
 
@@ -19,33 +20,44 @@ public class DatabaseConnectionExtension
         string sshUser = configuration.GetSection("PostgresSettings:SSH:User").Value;
         string sshKeyPath = configuration.GetSection("PostgresSettings:SSH:KeyPath").Value;
 
-        // Construct the connection string
-        NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
+        // Construct the connection string for Npgsql
+        var c = $"Host={host};Port={port};Database={database};Username={user};Password={password};;SSL Mode=Require;Trust Server Certificate=true;";
+        return c;
+    }
+
+    private static void SetupSshTunnel(string sshHost, int sshPort, string sshUsername, string sshPrivateKeyPath, string remoteHost, int remotePort, int localPort)
+    {
+        var keyFile = new PrivateKeyFile(sshPrivateKeyPath);
+        var connectionInfo = new Renci.SshNet.ConnectionInfo(
+    sshHost,
+    sshPort,
+    sshUsername,
+    new AuthenticationMethod[]
+    {
+                // Key-based authentication
+                new PrivateKeyAuthenticationMethod(sshUsername, keyFile)
+    }
+);
+
+        using (var client = new SshClient(connectionInfo))
         {
-            Host = host,
-            Port = int.Parse(port),
-            Database = database,
-            Username = user,
-            Password = password
-        };
+            client.Connect();
 
-        //if (useSshTunnel)
-        //{
-        //    builder.Enlist = false; // Important for Npgsql to work with SSH tunneling
-        //    builder.Timeout = 15;
+            var portForwarded = new ForwardedPortLocal("localhost", (uint)localPort, remoteHost, (uint)remotePort);
+            client.AddForwardedPort(portForwarded);
 
-        //    // SSH tunnel options
-        //    builder.SslMode = SslMode.Require;
-        //    builder.TrustServerCertificate = true;
+            portForwarded.Start();
 
-        //    // SSH connection options
-        //    builder.Add("Tunnel", "true");
-        //    builder.Add("TunnelHost", sshHost);
-        //    builder.Add("TunnelPort", sshPort);
-        //    builder.Add("TunnelUsername", sshUser);
-        //    builder.Add("TunnelPrivateKeyPath", sshKeyPath);
-        //}
+            Console.WriteLine($"SSH Tunnel established. Local port: {localPort}, Remote host: {remoteHost}, Remote port: {remotePort}");
 
-        return builder.ToString();
+            // Note: Keep this tunnel open as long as you need to access the database
+
+            // Don't forget to close the tunnel when done
+            //Console.WriteLine("Press any key to close the tunnel...");
+            //Console.ReadKey();
+
+            //portForwarded.Stop();
+            //client.Disconnect();
+        }
     }
 }

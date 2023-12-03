@@ -10,7 +10,7 @@ public class LogisticTracking
 
     public long recipient_id { get; set; }
 
-    public long location_Id { get; set; }
+    public long location_id { get; set; }
 
     public string tracking_status { get; set; }
 }
