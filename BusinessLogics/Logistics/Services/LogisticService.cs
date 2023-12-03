@@ -1,4 +1,6 @@
-﻿using SRE.Program.WebAPI.BusinessLogics.Caches;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using SRE.Program.WebAPI.BusinessLogics.Caches;
 using SRE.Program.WebAPI.BusinessLogics.Logistics.Entities;
 using SRE.Program.WebAPI.DataAccess.Models;
 using SRE.Program.WebAPI.DataAccess.Repositories.Logistics;
@@ -69,10 +71,10 @@ public class LogisticService : ILogisticService
         DataEntity? result = null;
 
         // 從 cache 拿
-        //result = _redisCacheService.Get<DataEntity>(sn.ToString());
+        var resultFromRedis = _redisCacheService.Get(sn.ToString());
 
         // 如果 cache 沒有，則從 DB 拿
-        if (result == null)
+        if (string.IsNullOrEmpty(resultFromRedis))
         {
             var metaData = this._logisticRepository.Get(sn);
 
@@ -81,8 +83,13 @@ public class LogisticService : ILogisticService
                 result = this.ArrangeData(metaData);
 
                 // 放進 redis 中
-                //this._redisCacheService.Set(sn.ToString(), metaData);
+                this._redisCacheService.Set(sn.ToString(), JsonSerializer.Serialize(metaData));
             }
+        }
+        else
+        {
+            this._logger.LogInformation($"key:{sn}，data from redis");
+            result = JsonSerializer.Deserialize<DataEntity>(resultFromRedis);
         }
 
         return result;

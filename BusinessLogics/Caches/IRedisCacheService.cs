@@ -2,7 +2,7 @@
 
 public interface IRedisCacheService
 {
-    T Get<T>(string key);
+    string Get(string key);
 
-    bool Set(string key, object value);
+    bool Set(string key, string value);
 }
