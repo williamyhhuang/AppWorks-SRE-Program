@@ -36,6 +36,19 @@ public class LogisticsController : ControllerBase
                 data = result
             };
         }
+        catch (ApplicationException ex)
+        {
+            return new ApiResponse
+            {
+                status = "error",
+                data = null,
+                error = new ErrorEntity
+                {
+                    code = 404,
+                    message = ex.Message
+                }
+            };
+        }
         catch (Exception ex)
         {
             return new ApiResponse

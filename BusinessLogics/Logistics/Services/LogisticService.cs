@@ -90,11 +90,31 @@ public class LogisticService : ILogisticService
 
     private DataEntity ArrangeData(IList<GetReturnModel> metaData)
     {
-        return new DataEntity();
-    }
-
-    private long GetRecipient()
-    {
-        return 0;
+        return new DataEntity
+        {
+            sno = metaData.First().logistic_id,
+            tracking_status = metaData.Last().tracking_status,
+            estimated_delivery = metaData.Last().estimated_delivery,
+            recipient = new RecipientEntity
+            {
+                id = metaData.Last().recipient_id,
+                address = metaData.Last().recipient_address,
+                phone = metaData.Last().recipient_phone,
+                name = metaData.Last().recipient_name
+            },
+            details = metaData.Select(i => new DetailEntity
+            {
+                id = i.logistic_tracking_id,
+                date = i.arrive_date_time,
+                status = i.tracking_status,
+                location_id = i.location_id,
+                location_title = i.location_title
+            }).ToList(),
+            current_location = new LocationEntity
+            {
+                location_id = metaData.Last().location_id,
+                title = metaData.Last().location_title
+            }
+        };
     }
 }

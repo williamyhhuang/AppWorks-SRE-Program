@@ -28,11 +28,11 @@ public class DetailEntity
 {
     public long id { get; set; }
 
-    public DateOnly date { get; set; }
+    public DateTime date { get; set; }
 
     public DateTime time { get; set; }
 
-    public tracking_status_enum status { get; set; }
+    public string status { get; set; }
 
     public long location_id { get; set; }
 
