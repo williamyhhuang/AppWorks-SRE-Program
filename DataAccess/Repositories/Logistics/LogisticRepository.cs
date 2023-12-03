@@ -54,7 +54,7 @@ public class LogisticRepository : ILogisticRepository
         var logistic = new Logistic()
         {
             recipient_id = recipient.recipient_id,
-            estimated_delivery = d,
+            estimated_delivery = d.ToUniversalTime(),
         };
         this.Insert(logistic);
 
@@ -62,7 +62,7 @@ public class LogisticRepository : ILogisticRepository
         for (int i = 0; i < num; i++)
         {
             var n = rand.Next(1, 10);
-            var arriveDateTime = DateTime.Now.AddDays(n);
+            var arriveDateTime = DateTime.Now.AddDays(n).ToUniversalTime();
             var locationId = this.GetRandomLocation().location_id;
             var status = this.RandomEnumValue<tracking_status_enum>().ToString();
 
