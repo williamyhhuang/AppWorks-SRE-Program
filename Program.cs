@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualBasic;
 using SRE.Program.WebAPI.BusinessLogics.Caches;
 using SRE.Program.WebAPI.BusinessLogics.Common;
 using SRE.Program.WebAPI.BusinessLogics.Logistics.Services;
@@ -16,12 +14,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<PostgresSettings>(
     builder.Configuration.GetSection("PostgresSettings")
 );
-builder.Services.Configure<TestSetting>(
-    builder.Configuration.GetSection("TestSetting")
-);
-
-
-var a = DatabaseConnectionExtension.GetConnectionString(builder.Configuration);
+builder.Host.ConfigureWebHostDefaults(webBuilder => 
+{ 
+    webBuilder.UseUrls("http://0.0.0.0:5000"); 
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
