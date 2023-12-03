@@ -14,10 +14,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<PostgresSettings>(
     builder.Configuration.GetSection("PostgresSettings")
 );
-builder.Host.ConfigureWebHostDefaults(webBuilder => 
-{ 
-    webBuilder.UseUrls("http://0.0.0.0:5000"); 
-});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
