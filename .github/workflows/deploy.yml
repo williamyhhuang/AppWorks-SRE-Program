@@ -40,4 +40,5 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/app/webapi
-            sudo service your-app-name restart
+            cp ./appsettings.json ./publish/
+            sudo systemctl restart SRE.Program.WebAPI.service
