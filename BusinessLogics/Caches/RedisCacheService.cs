@@ -13,7 +13,7 @@ public class RedisCacheService : IRedisCacheService
     {
         this._logger = logger;
         var endPoint = configuration.GetSection("RedisSettings:EndPoint").Value;
-        this._redis = ConnectionMultiplexer.Connect($"{endPoint}");
+        this._redis = ConnectionMultiplexer.Connect($"{endPoint},abortConnect=false");
     }
 
     public string Get(string key)
