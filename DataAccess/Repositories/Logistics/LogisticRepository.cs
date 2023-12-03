@@ -48,12 +48,13 @@ public class LogisticRepository : ILogisticRepository
 
         // 取得收件人
         var recipient = this.GetRandomRecipient();
+        var d = DateTime.Now.AddDays(num);
 
         // 新增物流
         var logistic = new Logistic()
         {
             recipient_id = recipient.recipient_id,
-            estimated_delivery = DateTime.Now.AddDays(num),
+            estimated_delivery = d,
         };
         this.Insert(logistic);
 
@@ -95,9 +96,10 @@ public class LogisticRepository : ILogisticRepository
     public Recipient GetRandomRecipient()
     {
         var randNum = new Random();
+        var num = randNum.Next(1, 10);
 
         var result = from r in this._posgresDbContext.Recipients
-                     where r.recipient_id == randNum.Next(1, 10)
+                     where r.recipient_id == num
                      select r;
 
         return result.First();
@@ -106,9 +108,10 @@ public class LogisticRepository : ILogisticRepository
     public Location GetRandomLocation()
     {
         var randNum = new Random();
+        var num = randNum.Next(1, 10);
 
         var result = from l in this._posgresDbContext.Locations
-                     where l.location_id == randNum.Next(1, 10)
+                     where l.location_id == num
                      select l;
 
         return result.First();
