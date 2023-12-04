@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           source: "./publish/"
-          target: "/home/ubuntu/app/webapi"
+          target: "/var/www/"
 
       - name: SSH into EC2 and Restart App
         uses: appleboy/ssh-action@master
@@ -39,5 +39,4 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            cd /home/ubuntu/app/webapi
-            cp ./appsettings.json ./publish/
+            cp ~/app/webapi/appsettings.json /var/www/publish/

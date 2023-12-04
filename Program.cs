@@ -14,6 +14,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<PostgresSettings>(
     builder.Configuration.GetSection("PostgresSettings")
 );
+builder.Services.Configure<RedisSettings>(
+    builder.Configuration.GetSection("RedisSettings")
+);
 
 builder.WebHost.ConfigureKestrel((context, serverOptions) =>
 {
