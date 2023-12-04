@@ -20,6 +20,7 @@ jobs:
 
       - name: Build and Publish
         run: |
+          ASPNETCORE_URLS=http://[::]:5000 dotnet run
           dotnet restore
           dotnet publish -c Release -o ./publish
 
@@ -41,4 +42,3 @@ jobs:
           script: |
             cd /home/ubuntu/app/webapi
             cp ./appsettings.json ./publish/
-            sudo systemctl restart SRE.Program.WebAPI.service
