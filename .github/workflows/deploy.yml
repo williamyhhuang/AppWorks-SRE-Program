@@ -20,7 +20,6 @@ jobs:
 
       - name: Build and Publish
         run: |
-          ASPNETCORE_URLS=http://[::]:5000 dotnet run
           dotnet restore
           dotnet publish -c Release -o ./publish
 
