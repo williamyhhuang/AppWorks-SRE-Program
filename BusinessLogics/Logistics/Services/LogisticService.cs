@@ -1,5 +1,4 @@
 ﻿using System.Text.Json;
-using System.Text.Json.Serialization;
 using SRE.Program.WebAPI.BusinessLogics.Caches;
 using SRE.Program.WebAPI.BusinessLogics.Logistics.Entities;
 using SRE.Program.WebAPI.DataAccess.Models;
@@ -125,19 +124,23 @@ public class LogisticService : ILogisticService
         };
     }
 
-    public void Report()
+    public string Report()
     {
         // get raw data
         var data = this._logisticRepository.Get()
             .GroupBy(i => i.tracking_status)
             .ToDictionary(x => x.Key, y => y.Count());
 
-        var result = new ReportEntity
+        var entity = new ReportEntity
         {
             created_at = DateTime.Now,
             trackingSummary = data
         };
 
+        var result = JsonSerializer.Serialize(entity);
+
         Console.WriteLine(result);
+
+        return result;
     }
 }

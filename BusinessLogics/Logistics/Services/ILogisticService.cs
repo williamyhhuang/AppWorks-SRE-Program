@@ -8,5 +8,5 @@ public interface ILogisticService
 
     IList<DataEntity> Fake(int num);
 
-    void Report();
+    string Report();
 }

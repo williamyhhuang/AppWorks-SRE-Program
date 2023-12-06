@@ -99,8 +99,8 @@ public class LogisticsController : ControllerBase
     [Route("report")]
     public ActionResult Report()
     {
-        this._logisticService.Report();
+        var result = this._logisticService.Report();
 
-        return this.Ok();
+        return this.Ok(result);
     }
 }
