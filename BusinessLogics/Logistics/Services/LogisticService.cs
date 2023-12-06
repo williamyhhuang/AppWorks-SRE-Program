@@ -82,7 +82,7 @@ public class LogisticService : ILogisticService
                 result = this.ArrangeData(metaData);
 
                 // 放進 redis 中
-                this._redisCacheService.Set(sn.ToString(), JsonSerializer.Serialize(metaData));
+                this._redisCacheService.Set(sn.ToString(), JsonSerializer.Serialize(result));
             }
         }
         else
