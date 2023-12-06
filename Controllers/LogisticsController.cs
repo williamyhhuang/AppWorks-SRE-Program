@@ -94,4 +94,13 @@ public class LogisticsController : ControllerBase
             };
         }
     }
+
+    [HttpGet]
+    [Route("report")]
+    public ActionResult Report()
+    {
+        this._logisticService.Report();
+
+        return this.Ok();
+    }
 }

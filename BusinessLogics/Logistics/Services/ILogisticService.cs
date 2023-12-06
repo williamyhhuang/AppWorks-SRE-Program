@@ -7,4 +7,6 @@ public interface ILogisticService
     DataEntity Query(long sn);
 
     IList<DataEntity> Fake(int num);
+
+    void Report();
 }

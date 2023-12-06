@@ -124,4 +124,20 @@ public class LogisticService : ILogisticService
             }
         };
     }
+
+    public void Report()
+    {
+        // get raw data
+        var data = this._logisticRepository.Get()
+            .GroupBy(i => i.tracking_status)
+            .ToDictionary(x => x.Key, y => y.Count());
+
+        var result = new ReportEntity
+        {
+            created_at = DateTime.Now,
+            trackingSummary = data
+        };
+
+        Console.WriteLine(result);
+    }
 }

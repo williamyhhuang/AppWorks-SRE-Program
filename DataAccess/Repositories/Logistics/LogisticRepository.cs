@@ -12,6 +12,14 @@ public class LogisticRepository : ILogisticRepository
         this._posgresDbContext = posgresDbContext;
     }
 
+    public IList<LogisticTracking> Get()
+    {
+        var result = from tracking in this._posgresDbContext.LogisticTrackings
+                     select tracking;
+
+        return result.ToList();
+    }
+
     public IList<GetReturnModel> Get(long sn)
     {
         var result = from logistic in this._posgresDbContext.Logistics
