@@ -41,3 +41,4 @@ jobs:
           script: |
             cd /home/ubuntu/app/webapi
             cp ./appsettings.json ./publish/
+            sudo dotnet /home/ubuntu/app/webapi/publish/SRE.Program.WebAPI.dll &
